@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% block title %}Finalizar Compra{% endblock %}
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">Finalizar Compra</h2>
+    
+    <form method="POST" class="needs-validation" novalidate>
+        <div class="row g-4">
+            <!-- Columna Izquierda -->
+            <div class="col-md-6">
+                <!-- Nombre completo -->
+                <div class="mb-3">
+                    <label class="form-label">Nombre completo</label>
+                    <input type="text" name="nombre" class="form-control" 
+                           pattern="^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+(\s[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)+$" 
+                           title="Ejemplo: María González López" 
+                           required>
+                    <div class="invalid-feedback">
+                        ⚠ Formato: Nombre Apellido (Mínimo 2 palabras)
+                    </div>
+                </div>
+
+                <!-- Dirección -->
+                <div class="mb-3">
+                    <label class="form-label">Dirección</label>
+                    <input type="text" name="direccion" class="form-control" 
+                           pattern="^C\/ [A-ZÁÉÍÓÚÑ][a-záéíóúñ]+(\s([A-ZÁÉÍÓÚÑ][a-záéíóúñ]+|[dD]e[lL]?[aA]?)?)+, Nº \d+[A-Za-z]?$"  
+                           required>
+                    <div class="invalid-feedback">
+                        ⚠ Ejemplo: C/ Toledo, Nº 27
+                    </div>
+                </div>
+            </div>
+
+            <!-- Columna Derecha -->
+            <div class="col-md-6">
+                <!-- Ciudad y Código Postal -->
+                <div class="row mb-3">
+                    <div class="col-md-8">
+                        <label class="form-label">Ciudad</label>
+                        <input type="text" name="ciudad" class="form-control" 
+                               pattern="^[A-ZÁÉÍÓÚÑ][a-zA-Záéíóúñ\s-]{2,}$" 
+                               required>
+                        <div class="invalid-feedback">
+                            ⚠ Ejemplo: Valdepeñas
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Código Postal</label>
+                        <input type="text" name="codigo_postal" class="form-control" 
+                               pattern="^\d{5}$" 
+                               inputmode="numeric"
+                               required>
+                        <div class="invalid-feedback">
+                            ⚠ 5 dígitos requeridos
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Teléfono -->
+                <div class="mb-3">
+                    <label class="form-label">Teléfono</label>
+                    <input type="tel" name="telefono" class="form-control" 
+                           pattern="^(\+34|0034|34)?[6789]\d{8}$" 
+                           required>
+                    <div class="invalid-feedback">
+                        ⚠ Ejemplo: +34 612345678
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<!-- Correo -->
+
+        <div class="form-group">
+            <label for="correo">Correo electrónico</label>
+            <input type="email" name="correo" required>
+        </div>
+
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <button type="submit" class="btn btn-success w-100 py-2">
+                    🖨 Generar Etiqueta
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <script>
+    (function () {
+        'use strict'
+        
+        const form = document.querySelector('.needs-validation')
+        
+        form.addEventListener('submit', function (event) {
+            event.preventDefault()
+            event.stopPropagation()
+            
+            // Validación mejorada
+            let isValid = true
+            Array.from(form.elements).forEach(element => {
+                if (element.tagName === 'INPUT') {
+                    if (!element.checkValidity()) {
+                        element.classList.add('is-invalid')
+                        element.reportValidity() // Nuevo: muestra tooltip nativo
+                        isValid = false
+                    } else {
+                        element.classList.remove('is-invalid')
+                    }
+                }
+            })
+            
+            if (!isValid) {
+                form.classList.add('was-validated')
+                return
+            }
+            
+            // Solo enviar si todo es válido
+            this.submit()
+        })
+        
+        // Validación en tiempo real con debounce
+        let timeout
+        Array.from(form.elements).forEach(element => {
+            if (element.tagName === 'INPUT') {
+                element.addEventListener('input', function() {
+                    clearTimeout(timeout)
+                    timeout = setTimeout(() => {
+                        const isValid = this.checkValidity()
+                        this.classList.toggle('is-valid', isValid)
+                        this.classList.toggle('is-invalid', !isValid)
+                    }, 300)
+                })
+            }
+        })
+    })()
+    </script>
+
+</div>
+{% endblock %}

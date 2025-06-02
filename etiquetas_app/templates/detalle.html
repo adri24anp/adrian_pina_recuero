@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-5">
+    <div class="row g-5">
+        <!-- Columna Imagen -->
+        <div class="col-md-6">
+            <div class="bg-light p-4 rounded-3">
+                <img src="{{ url_for('static', filename=producto.imagen) }}" 
+                     class="img-fluid" 
+                     alt="{{ producto.nombre }}"
+                     style="max-height: 500px; width: 100%; object-fit: contain;">
+            </div>
+        </div>
+
+        <!-- Columna Especificaciones -->
+        <div class="col-md-6">
+            <div class="card border-0">
+                <div class="card-body">
+                    <h1 class="mb-4">{{ producto.nombre }}</h1>
+                    
+                    <dl class="row fs-5">
+                        <dt class="col-sm-3 text-muted">Código:</dt>
+                        <dd class="col-sm-9">{{ producto.codigo }}</dd>
+
+                        <dt class="col-sm-3 text-muted">Precio:</dt>
+                        <dd class="col-sm-9 h2 text-primary">{{ producto.precio }} €</dd>
+                    </dl>
+
+                    <div class="mt-4">
+                        <h4 class="mb-3">Descripción</h4>
+                        <p class="lead">{{ producto.descripcion }}</p>
+                    </div>
+
+                    <!-- En la sección del botón -->
+<div class="mt-5">
+    <form action="{{ url_for('reservar_producto', producto_id=producto.id) }}" method="POST">
+        <button type="submit" class="btn btn-primary btn-lg w-100 py-3">
+            Añadir al carrito
+        </button>
+    </form>
+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        background: #fff;
+        padding: 2rem;
+        border-radius: 15px;
+    }
+    dt {
+        font-weight: 500;
+    }
+    dd {
+        margin-bottom: 1.5rem;
+    }
+    .bg-light {
+        background-color: #f8f9fa!important;
+    }
+</style>
+{% endblock %}

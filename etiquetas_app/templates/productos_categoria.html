@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Productos - {{ categoria }}{% endblock %}
+
+{% block content %}
+<div style="max-width: 1200px; margin: auto; padding: 20px;">
+    <h2 style="text-align: center; margin-bottom: 30px; color: #2c3e50;">Productos en la categoría: {{ categoria }}</h2>
+
+    {% if productos %}
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 25px;">
+        {% for producto in productos %} <!-- Inicio del for -->
+        <div style="border: 1px solid #e0e0e0; border-radius: 12px; padding: 20px; background: #fff; box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+                <img src="{{ url_for('static', filename=producto.imagen) }}" 
+                     alt="{{ producto.nombre }}" 
+                     style="width: 100%; height: 200px; object-fit: contain; margin-bottom: 15px;">
+                <h3 style="margin: 0 0 10px 0; font-size: 1.1em; color: #34495e;">{{ producto.nombre }}</h3>
+                <p style="font-size: 1.3em; color: #e74c3c; font-weight: 700; margin: 0 0 15px 0;">{{ producto.precio }} €</p>
+            </div>
+            
+            <a href="{{ url_for('detalle_producto', producto_id=producto.id) }}"
+               style="display: block;
+                      width: 100%;
+                      background-color: #3498db;
+                      color: white;
+                      padding: 12px 0;
+                      text-align: center;
+                      text-decoration: none;
+                      border-radius: 6px;
+                      font-weight: 500;
+                      transition: background-color 0.3s;">
+                Ver detalles
+            </a>
+        </div>
+        {% endfor %} <!-- Cierre faltante del for -->
+    </div>
+    {% else %}
+        <p style="text-align: center; color: #7f8c8d;">No hay productos en esta categoría.</p>
+    {% endif %}
+
+    <div style="margin-top: 40px; text-align: center;">
+        <a href="{{ url_for('mostrar_productos') }}" 
+           style="text-decoration: none;
+                  color: #3498db;
+                  font-weight: 500;
+                  transition: color 0.3s;">
+            ← Volver a todos los productos
+        </a>
+    </div>
+</div>
+{% endblock %}

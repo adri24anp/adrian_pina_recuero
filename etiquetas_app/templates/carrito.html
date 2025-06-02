@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Carrito de Compra</h1>
+    
+    {% if not carrito %}
+    <div class="alert alert-warning">El carrito está vacío</div>
+    {% else %}
+    <div class="row">
+        <div class="col-md-8">
+            {% for item in carrito %}
+            <div class="card mb-3 shadow">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="{{ url_for('static', filename=item.imagen) }}" 
+                             class="img-fluid rounded-start" 
+                             alt="{{ item.nombre }}">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ item.nombre }}</h5>
+                            <p class="card-text">
+                                Precio unitario: {{ "%.2f"|format(item.precio) }} €<br>
+                                Cantidad: {{ item.cantidad }}<br>
+                                Total: {{ "%.2f"|format(item.precio * item.cantidad) }} €
+                            </p>
+                            <form method="POST" action="{{ url_for('eliminar_del_carrito', producto_id=item.id) }}">
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    Eliminar
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h5 class="card-title mb-4">Resumen de Compra</h5>
+                    <p class="fs-5">Total: {{ "%.2f"|format(total) }} €</p>
+                    <a href="{{ url_for('finalizar_compra') }}" 
+                       class="btn btn-success w-100 py-2">
+                        Finalizar Compra
+                    </a>
+                    <a href="{{ url_for('mostrar_productos') }}" 
+                       class="btn btn-outline-primary w-100 mt-2 py-2">
+                        Seguir Comprando
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
